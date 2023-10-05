@@ -67,15 +67,7 @@
                 console.log("imwUserDataId : " + '${f:h(StockForm.imwUserDataId)}')
              	console.log("---------------------------------------------")
              	console.log("workflowOpenPageForm")
-             	
-	           imwUserDataId="${f:h(StockForm.imwUserDataId)}"
-	           imwSystemMatterId="${f:h(StockForm.imwSystemMatterId)}"
-	           imwAuthUserCode="${f:h(StockForm.imwAuthUserCode)}"
-	           imwApplyBaseDate="${f:h(StockForm.imwApplyBaseDate)}"
-	           imwNodeId="${f:h(StockForm.imwNodeId)}"
-	           imwFlowId="${f:h(StockForm.imwFlowId)}"
-	           imwCallOriginalParams="${f:h(StockForm.imwCallOriginalParams)}"
-	           imwNextScriptPath="${f:h(StockForm.imwCallOriginalPagePath)}"
+      
 	           
 	           console.log("imwUserDataId : " +"${f:h(StockForm.imwUserDataId)}")
 	           console.log("imwSystemMatterId : " + "${f:h(StockForm.imwSystemMatterId)}")
@@ -230,6 +222,7 @@
 </c:forEach>
 </div>
 </workflow:workflowOpenPage>
+
     <table class="imui-form">
         <tbody>
             <tr>
@@ -242,6 +235,10 @@
             </tr>
         </tbody>
     </table>
+    
+<!-- daslkd end of tag <div class="imui-form-container-narrow"> -->    
+</div>
+
 <div class="imui-operation-parts">
     <imart:decision case="0" value="${f:h(StockForm.imwPageType)}">
         <input type="button" value='Apply' id="openPage" name="openPage" class="imui-large-button" escapeXml="true" escapeJs="false" />
