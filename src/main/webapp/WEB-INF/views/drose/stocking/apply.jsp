@@ -7,13 +7,8 @@
 <%@ taglib prefix="workflow" uri="http://www.intra-mart.co.jp/taglib/imw/workflow" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 
-
-
-
-
-
 <imui:head>
-    <title>Untitled</title>
+    <title>Stock Produck</title>
     <workflow:workflowOpenPageCsjs />
     <script src="ui/libs/jquery-validation-1.9.0/jquery.validate.js"></script>
     <script type="text/javascript">
@@ -21,13 +16,13 @@
             nama_produk : {
                 required : true
             },
+            kategori : {
+                required : true
+            },
             harga : {
                 required : true
             },
             stok : {
-                required : true
-            },
-            kategori : {
                 required : true
             },
             nama_toko : {
@@ -37,57 +32,65 @@
                 required : true
             }
         };
+        
         var messages = {
-        	nama_produk : {
-                required : "Plese input the product name !"
-            },
-            harga : {
-                required : "Please input harga !"
-            },
-            stok : {
-                required : "Please input quantity !"
-            },
-            kategori : {
-                required : "Please select the category !"
-            },
-            nama_toko : {
-                required : true
-            },
-            alamat : {
-                required : true
-            }
-        };
+                nama_produk : {
+                    required : "Plese input the product name !"
+                },
+                kategori : {
+                    required : "Please select the category !"
+                },
+                harga : {
+                    required : "Please input harga !"
+                },
+                stok : {
+                    required : "Please input quantity !"
+                },
+                nama_toko : {
+                    required : "Please input"
+                },
+                alamat : {
+                    required : "Please input"
+                }
+            };
+       
         $(function() {
-        	
-        	$('#openPage').click(function(){
-        		imwUserDataId="${f:h(ContractForm.imwUserDataId)}"
-        	           imwSystemMatterId="${f:h(ContractForm.imwSystemMatterId)}"
-        	           imwAuthUserCode="${f:h(ContractForm.imwAuthUserCode)}"
-        	           imwApplyBaseDate="${f:h(ContractForm.imwApplyBaseDate)}"
-        	           imwNodeId="${f:h(ContractForm.imwNodeId)}"
-        	           imwFlowId="${f:h(ContractForm.imwFlowId)}"
-        	           imwCallOriginalParams="${f:h(ContractForm.imwCallOriginalParams)}"
-        	           imwNextScriptPath="${f:h(ContractForm.imwCallOriginalPagePath)}";
-        	    
-        	    console.log("PUSING")
-        	    console.log("${f:h(ContractForm)}")
-        	    console.log("userDataid : "+"${f:h(ContractForm.imwUserDataId)}")
-        	    console.log("systemMatterId : "+ "${f:h(ContractForm.imwSystemMatterId)}");
-        	    console.log("AuthUserCode : "+"${f:h(ContractForm.imwAuthUserCode)}")
-        	    console.log("imwApplyBaseDate : "+"${f:h(ContractForm.imwApplyBaseDate)}")
-        	    console.log("imwNodeId : "+"${f:h(ContractForm.imwNodeId)}")
-        	    console.log("imwFlowId : "+"${f:h(ContractForm.imwFlowId)}")
-        	    console.log("imwCallOriginalParams : "+"${f:h(ContractForm.imwCallOriginalParams)}")
-        	    console.log("imwCallOriginalPagePath : "+"${f:h(ContractForm.imwCallOriginalPagePath)}")
-        	    console.log("ABISSS")
-				workflowOpenPage('${f:h(ContractForm.imwPageType)}');
-				return false;
-			});
-            $("#clearbutton").click(()=>{
-                $("#nama_produk").val("");
-                $("#harga").val("");
-                $("#stok").val("");
-            })
+            $('#openPage').click(function(){
+                if (!imuiValidate('#workflowOpenPageForm', rules, messages)) return;
+                console.log("workflow:workflowUserContentsAuth")
+                console.log("imwApplyBaseDate : "+'${f:h(StockForm.imwApplyBaseDate)}')
+                console.log("imwAuthUserCode : " +'${f:h(StockForm.imwAuthUserCode)}')
+                console.log("imwFlowId : " + '${f:h(StockForm.imwFlowId)}')
+                console.log("imwNodeId : " + '${f:h(StockForm.imwNodeId)}')
+                console.log("imwPageType : " +'${f:h(StockForm.imwPageType)}')
+                console.log("imwSystemMatterId : " + '${f:h(StockForm.imwSystemMatterId)}')
+                console.log("imwUserDataId : " + '${f:h(StockForm.imwUserDataId)}')
+             	console.log("---------------------------------------------")
+             	console.log("workflowOpenPageForm")
+             	
+	           imwUserDataId="${f:h(StockForm.imwUserDataId)}"
+	           imwSystemMatterId="${f:h(StockForm.imwSystemMatterId)}"
+	           imwAuthUserCode="${f:h(StockForm.imwAuthUserCode)}"
+	           imwApplyBaseDate="${f:h(StockForm.imwApplyBaseDate)}"
+	           imwNodeId="${f:h(StockForm.imwNodeId)}"
+	           imwFlowId="${f:h(StockForm.imwFlowId)}"
+	           imwCallOriginalParams="${f:h(StockForm.imwCallOriginalParams)}"
+	           imwNextScriptPath="${f:h(StockForm.imwCallOriginalPagePath)}"
+	           
+	           console.log("imwUserDataId : " +"${f:h(StockForm.imwUserDataId)}")
+	           console.log("imwSystemMatterId : " + "${f:h(StockForm.imwSystemMatterId)}")
+	           console.log("imwAuthUserCode : " + "${f:h(StockForm.imwAuthUserCode)}")
+	           console.log("imwApplyBaseDate : " + "${f:h(StockForm.imwApplyBaseDate)}")
+	           console.log("imwNodeId : " + "${f:h(StockForm.imwNodeId)}")
+	           console.log("imwFlowId : " + "${f:h(StockForm.imwFlowId)}")
+	           console.log("imwCallOriginalParams : " + "${f:h(StockForm.imwCallOriginalParams)}")
+	           console.log("imwCallOriginalPagePath : " + "${f:h(StockForm.imwCallOriginalPagePath)}")
+               
+                workflowOpenPage('${f:h(StockForm.imwPageType)}');
+                
+                
+                return false;
+            });
         });
 
         function callbackSuccess_contract(e, data) {
@@ -128,9 +131,17 @@
         }
     </script>
 </imui:head>
+
+<workflow:workflowUserContentsAuth imwApplyBaseDate='${f:h(StockForm.imwApplyBaseDate)}'
+            imwAuthUserCode = '${f:h(StockForm.imwAuthUserCode)}'
+            imwFlowId='${f:h(StockForm.imwFlowId)}'
+            imwNodeId ='${f:h(StockForm.imwNodeId)}'
+            imwPageType = '${f:h(StockForm.imwPageType)}'
+            imwSystemMatterId='${f:h(StockForm.imwSystemMatterId)}'
+            imwUserDataId='${f:h(StockForm.imwUserDataId)}'/>
 <!-- 画面タイトル -->
 <div class="imui-title">
-    <h1 id="h1">Insert New Product 11</h1>
+    <h1 id="h1">Stock Produck</h1>
 </div>
 <!-- ツールバー -->
 <div class="imui-toolbar-wrap">
@@ -142,31 +153,31 @@
         </ul>
     </div>
 </div>
+<div class="imui-form-container-narrow">
 <workflow:workflowOpenPage name="workflowOpenPageForm"
            id="workflowOpenPageForm"
            method="POST"
            target="_top"
-           imwUserDataId="${f:h(ContractForm.imwUserDataId)}"
-           imwSystemMatterId="${f:h(ContractForm.imwSystemMatterId)}"
-           imwAuthUserCode="${f:h(ContractForm.imwAuthUserCode)}"
-           imwApplyBaseDate="${f:h(ContractForm.imwApplyBaseDate)}"
-           imwNodeId="${f:h(ContractForm.imwNodeId)}"
-           imwFlowId="${f:h(ContractForm.imwFlowId)}"
-           imwCallOriginalParams="${f:h(ContractForm.imwCallOriginalParams)}"
-           imwNextScriptPath="${f:h(ContractForm.imwCallOriginalPagePath)}">
-<div class="imui-form-container-narrow">
+           imwUserDataId="${f:h(StockForm.imwUserDataId)}"
+           imwSystemMatterId="${f:h(StockForm.imwSystemMatterId)}"
+           imwAuthUserCode="${f:h(StockForm.imwAuthUserCode)}"
+           imwApplyBaseDate="${f:h(StockForm.imwApplyBaseDate)}"
+           imwNodeId="${f:h(StockForm.imwNodeId)}"
+           imwFlowId="${f:h(StockForm.imwFlowId)}"
+           imwCallOriginalParams="${f:h(StockForm.imwCallOriginalParams)}"
+           imwNextScriptPath="${f:h(StockForm.imwCallOriginalPagePath)}">
+           
+           
+<div class="imui-form-container-full">
     <!-- h2 -->
     <div class="imui-chapter-title">
         <h2>Insert New Product</h2>
     </div>
-    <form:form id="insertForm" name="insertForm" method="POST"
-        class="target_form mt-10" action="product/insert/data"
-        modelAttribute="insertProductData">
         <table class="imui-form">
             <tbody>
                 <tr>
-                    <th><label  for="nama_produck">Nama Produk</label></th>
-                    <td><imui:textbox id="nama_produck" name="nama_produck" style="width: 200px;" /></td>
+                    <th><label  for="nama_produk">Nama Produk</label></th>
+                    <td><imui:textbox id="nama_produk" name="nama_produk" style="width: 200px;" /></td>
                 </tr>
                 <tr>
                     <th><label for="kategori">Kategori</label></th>
@@ -208,10 +219,17 @@
                 </tr>
             </tbody>
         </table>
-
-    </form:form>
-
-
+</div>
+<div class="contract_file_upload">
+    <c:forEach items="${ContractFormClassRows.d_list_info_temp_file}" var="v_item_file">
+        <div class="${v_item_file.file_real_name}">
+            <input type='hidden' value='0' id='f_contract_upload_file_id' name='f_contract_upload_file_id'>
+            <input type='hidden' value="${v_item_file.file_name}" id='f_contract_upload_file_name' name='f_contract_upload_file_name' >
+            <input type='hidden' value="${v_item_file.file_real_name}" id='f_contract_upload_file_real_name' name='f_contract_upload_file_real_name'>
+        </div>
+</c:forEach>
+</div>
+</workflow:workflowOpenPage>
     <table class="imui-form">
         <tbody>
             <tr>
@@ -224,26 +242,11 @@
             </tr>
         </tbody>
     </table>
-
-</div>
-<div class="contract_file_upload">
-	<c:forEach items="${ContractFormClassRows.d_list_info_temp_file}" var="v_item_file">
-		<div class="${v_item_file.file_real_name}">
-			<input type='hidden' value='0' id='f_contract_upload_file_id' name='f_contract_upload_file_id'>
-			<input type='hidden' value="${v_item_file.file_name}" id='f_contract_upload_file_name' name='f_contract_upload_file_name' >
-			<input type='hidden' value="${v_item_file.file_real_name}" id='f_contract_upload_file_real_name' name='f_contract_upload_file_real_name'>
-		</div>
-</c:forEach>
-</div>
-</workflow:workflowOpenPage>
-
-
 <div class="imui-operation-parts">
-	<imart:decision case="0" value="${f:h(ContractForm.imwPageType)}">
-		<input type="button" value='Apply1' id="openPage" name="openPage" class="imui-large-button" escapeXml="true" escapeJs="false" />
-	</imart:decision>
-	<imart:decision case="3" value="${f:h(ContractForm.imwPageType)}">
-		<input type="button" value='Re-Apply2' id="openPage" name="openPage" class="imui-large-button" escapeXml="true" escapeJs="false" />
-	</imart:decision>
+    <imart:decision case="0" value="${f:h(StockForm.imwPageType)}">
+        <input type="button" value='Apply' id="openPage" name="openPage" class="imui-large-button" escapeXml="true" escapeJs="false" />
+    </imart:decision>
+    <imart:decision case="3" value="${f:h(StockForm.imwPageType)}">
+        <input type="button" value='Re-Apply' id="openPage" name="openPage" class="imui-large-button" escapeXml="true" escapeJs="false" />
+    </imart:decision>
 </div>
-
