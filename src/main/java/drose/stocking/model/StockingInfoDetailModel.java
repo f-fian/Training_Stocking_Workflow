@@ -7,7 +7,7 @@ public class StockingInfoDetailModel {
     private String nama_produk;
     private String kategori;
     private String harga;
-    private String stock;
+    private String stok;
     private String nama_toko;
     
     public int getId() {
@@ -58,12 +58,12 @@ public class StockingInfoDetailModel {
         this.harga = harga;
     }
 
-    public String getStock() {
-        return stock;
+    public String getStok() {
+        return stok;
     }
 
-    public void setStock(String stock) {
-        this.stock = stock;
+    public void setStock(String stok) {
+        this.stok = stok;
     }
 
     public String getNama_toko() {
