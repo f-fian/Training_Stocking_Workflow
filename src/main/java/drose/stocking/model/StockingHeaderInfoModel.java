@@ -1,28 +1,19 @@
 package drose.stocking.model;
 
 public class StockingHeaderInfoModel {
-    private String id;
+    private int id;
     private String system_matter_id;
     private String user_data_id ;
     private String status ;
     private String nama_toko;
     private String alamat;
     
-    public StockingHeaderInfoModel(String id, String system_matter_id, String user_data_id, String status,
-            String nama_toko, String alamat) {
-        super();
-        this.id = id;
-        this.system_matter_id = system_matter_id;
-        this.user_data_id = user_data_id;
-        this.status = status;
-        this.nama_toko = nama_toko;
-        this.alamat = alamat;
-    }
+   
     
-    public String getId() {
+    public int getId() {
         return id;
     }
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
     public String getSystem_matter_id() {

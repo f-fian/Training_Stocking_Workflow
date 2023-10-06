@@ -3,22 +3,15 @@ package drose.stocking.service.im;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-/*import gpr.contract.model.ContractHeaderModel;
-import gpr.contract.model.ContractInfoBudgetModel;
-import gpr.contract.model.ContractInfoFileModel;
-import gpr.contract.model.ContractInfoHeaderModel;
-import gpr.contract.repository.ContractHeaderRepository;
-import gpr.contract.repository.ContractInfoBudgetRepository;
-import gpr.contract.repository.ContractInfoFileRepository;
-import gpr.contract.repository.ContractInfoHeaderRepository;
-import gpr.contract.service.app.ContractWorkflowService;*/
+import drose.stocking.model.StockingInfoFileModel;
+import drose.stocking.repository.StockingInfoFileRepo;
+import drose.stocking.service.app.StockingWorkflowService;
 import jp.co.intra_mart.foundation.workflow.exception.WorkflowExternalException;
 import jp.co.intra_mart.foundation.workflow.plugin.process.action.*;
 import jp.co.intra_mart.foundation.workflow.util.WorkflowNumberingManager;
 
-public class ContractActionProcess extends ActionProcessEventListener {	
-	
+public class StockingActionProcess extends ActionProcessEventListener {
+
 	private void outputLog(ActionProcessParameter parameter) {
 		System.out.println("LoginGroupId        : " + parameter.getLoginGroupId());
 		System.out.println("LocaleId            : " + parameter.getLocaleId());
@@ -66,9 +59,10 @@ public class ContractActionProcess extends ActionProcessEventListener {
 		System.out.println("LumpProcessFlag     : " + parameter.getLumpProcessFlag());
 		System.out.println("AutoProcessFlag     : " + parameter.getAutoProcessFlag());
 	}
-	
+
 	@Override
-	public String apply(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public String apply(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - apply -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - apply -----");
@@ -82,10 +76,8 @@ public class ContractActionProcess extends ActionProcessEventListener {
 			 * ContractHeaderRepository(); ContractInfoHeaderRepository
 			 * contractInfoTempHeaderRepository = new ContractInfoHeaderRepository();
 			 * ContractInfoBudgetRepository contractInfoTempBudgetRepository = new
-			 * ContractInfoBudgetRepository(); ContractInfoFileRepository
-			 * contractInfoTempFileRepository = new ContractInfoFileRepository();
-			 * 
-			 * final ContractHeaderModel entity_header = getEntity_ContractHeader(parameter,
+			 * ContractInfoBudgetRepository(); ContractInfoFileRepository final
+			 * ContractHeaderModel entity_header = getEntity_ContractHeader(parameter,
 			 * userParameter); final ContractInfoHeaderModel entity_infoTempHeader =
 			 * getEntity_ContractInfoHeader(parameter, userParameter); final
 			 * List<ContractInfoBudgetModel> entity_infoTempBudget =
@@ -93,10 +85,9 @@ public class ContractActionProcess extends ActionProcessEventListener {
 			 * List<ContractInfoFileModel> entity_infoTempFile =
 			 * getEntity_ContractInfoFile(parameter, userParameter,
 			 * parameter.getSystemMatterId());
-			 */
-
-			/*
-			 * contractHeaderRepository.insertContractHeader(entity_header);
+			 * 
+			 * 
+			 * /* contractHeaderRepository.insertContractHeader(entity_header);
 			 * contractInfoTempHeaderRepository.insertContractInfoTempHeader(
 			 * entity_infoTempHeader);
 			 * 
@@ -108,15 +99,101 @@ public class ContractActionProcess extends ActionProcessEventListener {
 			 * contractInfoTempFileRepository.insertContractInfoTempFile(entity_infoTempFile
 			 * .get(i)); contractQuery.contractFileTransfer(parameter.getSystemMatterId() ,
 			 * entity_infoTempFile.get(i).getFile_real_name()); }
+			 * 
 			 */
+			
+			
+			StockingWorkflowService stockingWorkFlowService = new StockingWorkflowService();
+			final List<StockingInfoFileModel> entity_infoTempFile = getEntity_StockingInfoFile(parameter, userParameter, parameter.getSystemMatterId());
+			StockingInfoFileRepo stockingFileRepo = new StockingInfoFileRepo();
+			for(int i=0; i<entity_infoTempFile.size(); i++) {
+				stockingFileRepo.insertStockingInfoTempFile(entity_infoTempFile.get(i));
+				stockingWorkFlowService.StockingFileTransfer(parameter.getSystemMatterId() , entity_infoTempFile.get(i).getFile_real_name());
+			}
+
+			
 		} catch (final Exception e) {
 			throw new WorkflowExternalException("Error Message", e);
 		}
 		return number;
 	}
 	
+	private List<StockingInfoFileModel> getEntity_StockingInfoFile(final ActionProcessParameter parameter, final Map<String, Object> userParameter, String system_matter_id) {
+        List<StockingInfoFileModel> result = new ArrayList<StockingInfoFileModel>();
+        System.out.println(userParameter.get("f_contract_upload_file_id"));
+        System.out.println("f_contract_upload_file_id");
+        System.out.println(userParameter.get("f_contract_upload_file_name"));
+        System.out.println("f_contract_upload_file_name");
+        System.out.println(userParameter.get("f_contract_upload_file_real_name"));
+        System.out.println("f_contract_upload_file_id");
+        try {
+            List<String> varId = (List<String>) userParameter.get("f_contract_upload_file_id");
+            List<String> varFileName = (List<String>)userParameter.get("f_contract_upload_file_name");
+            List<String> varFileRealName = (List<String>)userParameter.get("f_contract_upload_file_real_name");
+            
+            for(int i=0; i<varId.size(); i++) {
+            	StockingInfoFileModel entity = new StockingInfoFileModel();
+                entity.setId(Integer.parseInt(varId.get(i)));
+                entity.setSystem_matter_id(parameter.getSystemMatterId());
+                entity.setUser_data_id(parameter.getUserDataId());
+                
+                entity.setFile_name(getEntity_TryCatch_String(varFileName , i));  
+                entity.setFile_real_name(getEntity_TryCatch_String(varFileRealName , i));
+                
+                entity.setFile_path("gpr_contract/" + system_matter_id  + "/gpr_contract_flow/" + entity.getFile_real_name());
+                
+                if(!entity.getFile_name().equals("") && !entity.getFile_real_name().equals("")) {
+                    if(!entity.getFile_name().equals("-") && !entity.getFile_real_name().equals("-")) {
+                        result.add(entity);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            StockingInfoFileModel entity = new StockingInfoFileModel();
+            try {
+            	entity.setId(Integer.parseInt(userParameter.get("f_contract_upload_file_id").toString()));
+                entity.setSystem_matter_id(parameter.getSystemMatterId());
+                entity.setUser_data_id(parameter.getUserDataId());
+                
+                entity.setFile_name(getEntity_TryCatch_UserParameter(userParameter , "f_contract_upload_file_name"));
+                entity.setFile_real_name(getEntity_TryCatch_UserParameter(userParameter , "f_contract_upload_file_real_name"));
+                                
+                entity.setFile_path("gpr_contract/" + system_matter_id + "/gpr_contract_flow/" + entity.getFile_real_name());
+                
+                if(!entity.getFile_name().equals("") && !entity.getFile_real_name().equals("")) {
+                    if(!entity.getFile_name().equals("-") && !entity.getFile_real_name().equals("-")) {
+                        result.add(entity);
+                    }
+                }
+            } catch (Exception e2) {
+                System.out.println("no file entity");
+            }
+        }
+        return result;
+    }
+	
+	private String getEntity_TryCatch_UserParameter(final Map<String, Object> userParameter, String input_form) {
+    	try {
+    		return userParameter.get(input_form).toString();
+    	} catch (Exception e) {
+        	return "";
+        }
+    }
+    
+    private String getEntity_TryCatch_String(List<String> input_form, int i) {
+    	try {
+    		return input_form.get(i);
+    	} catch (Exception e) {
+        	return "";
+        }
+    }
+	
+	
+	
+
 	@Override
-	public String applyFromTempSave(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public String applyFromTempSave(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - applyFromTempSave -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - applyFromTempSave -----");
@@ -137,7 +214,8 @@ public class ContractActionProcess extends ActionProcessEventListener {
 	}
 
 	@Override
-	public String applyFromUnapply(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public String applyFromUnapply(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - applyFromUnapply -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - applyFromUnapply -----");
@@ -182,7 +260,8 @@ public class ContractActionProcess extends ActionProcessEventListener {
 	 */
 
 	@Override
-	public void approveEnd(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public void approveEnd(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - approveEnd -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - approveEnd -----");
@@ -208,7 +287,8 @@ public class ContractActionProcess extends ActionProcessEventListener {
 	}
 
 	@Override
-	public void discontinue(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public void discontinue(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - discontinue -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - discontinue -----");
@@ -221,7 +301,8 @@ public class ContractActionProcess extends ActionProcessEventListener {
 	}
 
 	@Override
-	public void matterHandle(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public void matterHandle(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - matterHandle -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - matterHandle -----");
@@ -234,7 +315,8 @@ public class ContractActionProcess extends ActionProcessEventListener {
 	}
 
 	@Override
-	public void pullBack(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public void pullBack(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - pullBack -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - pullBack -----");
@@ -246,10 +328,9 @@ public class ContractActionProcess extends ActionProcessEventListener {
 		}
 	}
 
-	
-
 	@Override
-	public void reserve(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public void reserve(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - reserve -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - reserve -----");
@@ -262,7 +343,8 @@ public class ContractActionProcess extends ActionProcessEventListener {
 	}
 
 	@Override
-	public void reserveCancel(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public void reserveCancel(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - reserveCancel -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - reserveCancel -----");
@@ -275,7 +357,8 @@ public class ContractActionProcess extends ActionProcessEventListener {
 	}
 
 	@Override
-	public void sendBack(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public void sendBack(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - sendBack -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - sendBack -----");
@@ -288,7 +371,8 @@ public class ContractActionProcess extends ActionProcessEventListener {
 	}
 
 	@Override
-	public void sendBackToPullBack(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public void sendBackToPullBack(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - sendBackToPullBack -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - sendBackToPullBack -----");
@@ -301,7 +385,8 @@ public class ContractActionProcess extends ActionProcessEventListener {
 	}
 
 	@Override
-	public void tempSaveCreate(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public void tempSaveCreate(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - tempSaveCreate -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - tempSaveCreate -----");
@@ -314,7 +399,8 @@ public class ContractActionProcess extends ActionProcessEventListener {
 	}
 
 	@Override
-	public void tempSaveDelete(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public void tempSaveDelete(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - tempSaveDelete -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - tempSaveDelete -----");
@@ -327,7 +413,8 @@ public class ContractActionProcess extends ActionProcessEventListener {
 	}
 
 	@Override
-	public void tempSaveUpdate(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+	public void tempSaveUpdate(final ActionProcessParameter parameter, final Map<String, Object> userParameter)
+			throws Exception {
 		System.out.println("----- ActionProcessParameter - tempSaveUpdate -----");
 		outputLog(parameter);
 		System.out.println("----- ActionProcessParameter - tempSaveUpdate -----");

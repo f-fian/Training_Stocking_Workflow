@@ -1,7 +1,7 @@
 package drose.stocking.model;
 
 public class StockingInfoFileModel {
-    private String id;
+    private int id;
     private String system_matter_id;
     private String user_data_id;
     private String file_name;
@@ -9,23 +9,13 @@ public class StockingInfoFileModel {
     private String file_path;
     private String created_at;
     
-    public StockingInfoFileModel(String id, String system_matter_id, String user_data_id, String file_name,
-            String file_real_name, String file_path, String created_at) {
-        super();
-        this.id = id;
-        this.system_matter_id = system_matter_id;
-        this.user_data_id = user_data_id;
-        this.file_name = file_name;
-        this.file_real_name = file_real_name;
-        this.file_path = file_path;
-        this.created_at = created_at;
-    }
+   
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

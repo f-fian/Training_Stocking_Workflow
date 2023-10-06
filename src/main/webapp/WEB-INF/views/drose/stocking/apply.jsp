@@ -102,7 +102,7 @@
             $(".contract_file_upload")
                     .prepend(
                             "<div class='"+ receivePhysicalFileName +"'>"
-                                    + "<input type='hidden' value='0' id='f_contract_upload_file_id' name='f_contract_upload_file_id'>"
+                                    + "<input type='hidden' value='12' id='f_contract_upload_file_id' name='f_contract_upload_file_id'>"
                                     + "<input type='hidden' value='"+ receiveFileName +"' id='f_contract_upload_file_name' name='f_contract_upload_file_name'>"
                                     + "<input type='hidden' value='"+ receivePhysicalFileName +"' id='f_contract_upload_file_real_name' name='f_contract_upload_file_real_name'>"
                                     + "</div>");
@@ -159,7 +159,7 @@
            imwCallOriginalParams="${f:h(StockForm.imwCallOriginalParams)}"
            imwNextScriptPath="${f:h(StockForm.imwCallOriginalPagePath)}">
            
-           
+         
 <div class="imui-form-container-full">
     <!-- h2 -->
     <div class="imui-chapter-title">
@@ -213,13 +213,13 @@
         </table>
 </div>
 <div class="contract_file_upload">
-    <c:forEach items="${ContractFormClassRows.d_list_info_temp_file}" var="v_item_file">
+    <%-- <c:forEach items="${ContractFormClassRows.d_list_info_temp_file}" var="v_item_file">
         <div class="${v_item_file.file_real_name}">
             <input type='hidden' value='0' id='f_contract_upload_file_id' name='f_contract_upload_file_id'>
             <input type='hidden' value="${v_item_file.file_name}" id='f_contract_upload_file_name' name='f_contract_upload_file_name' >
             <input type='hidden' value="${v_item_file.file_real_name}" id='f_contract_upload_file_real_name' name='f_contract_upload_file_real_name'>
         </div>
-</c:forEach>
+	</c:forEach> --%>
 </div>
 </workflow:workflowOpenPage>
 

@@ -1,7 +1,7 @@
 package drose.stocking.model;
 
 public class StockingInfoDetailModel {
-    private String id;
+    private int id;
     private String system_matter_id;
     private String user_data_id;
     private String nama_produk;
@@ -10,24 +10,11 @@ public class StockingInfoDetailModel {
     private String stock;
     private String nama_toko;
     
-    public StockingInfoDetailModel(String id, String system_matter_id, String user_data_id, String nama_produk,
-            String kategori, String harga, String stock, String nama_toko) {
-        super();
-        this.id = id;
-        this.system_matter_id = system_matter_id;
-        this.user_data_id = user_data_id;
-        this.nama_produk = nama_produk;
-        this.kategori = kategori;
-        this.harga = harga;
-        this.stock = stock;
-        this.nama_toko = nama_toko;
-    }
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
