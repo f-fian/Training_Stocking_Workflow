@@ -62,7 +62,7 @@ public class StockingInfoDetailModel {
         return stok;
     }
 
-    public void setStock(String stok) {
+    public void setStok(String stok) {
         this.stok = stok;
     }
 

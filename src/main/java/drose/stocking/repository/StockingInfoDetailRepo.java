@@ -1,6 +1,4 @@
 package drose.stocking.repository;
-
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +21,13 @@ public class StockingInfoDetailRepo {
             + "FROM wf_stocking_temp_info_detail WHERE system_matter_id = ?";
     
     public void insertDataToTempDetail(StockingInfoDetailModel tempDetail) throws Exception {
+    	System.out.println(tempDetail.getUser_data_id());
+    	System.out.println(tempDetail.getSystem_matter_id());
+    	System.out.println(tempDetail.getNama_produk());
+    	System.out.println(tempDetail.getKategori());
+    	System.out.println(tempDetail.getHarga());
+    	System.out.println(tempDetail.getStok());
+    	System.out.println(tempDetail.getNama_toko());
         try {
             SQLManager sqlManager = new SQLManager();
             ColumnValues result = new ColumnValues();
@@ -30,8 +35,9 @@ public class StockingInfoDetailRepo {
             result.add("system_matter_id", tempDetail.getSystem_matter_id());
             result.add("nama_produk", tempDetail.getNama_produk());
             result.add("kategori", tempDetail.getKategori());
-            result.add("harga ", tempDetail.getHarga());
-            result.add("stok ", tempDetail.getStock());
+            result.add("harga", tempDetail.getHarga());
+            result.add("stok", tempDetail.getStok());
+            result.add("nama_toko", tempDetail.getNama_toko());
             sqlManager.insert("wf_stocking_temp_info_detail", result);
         } catch (Exception e) {
             e.printStackTrace();

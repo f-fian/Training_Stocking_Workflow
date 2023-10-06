@@ -4,6 +4,7 @@ import java.util.*;
 
 import drose.stocking.model.StockingHeaderInfoModel;
 import drose.stocking.model.StockingHeaderModel;
+import drose.stocking.model.StockingInfoDetailModel;
 import drose.stocking.model.StockingInfoFileModel;
 import drose.stocking.repository.StockingHeaderRepo;
 import drose.stocking.repository.StockingInfoDetailRepo;
@@ -116,10 +117,13 @@ public class StockingActionProcess extends ActionProcessEventListener {
             
             final StockingHeaderModel entity_header = getEntity_StockingHeader(parameter, userParameter);
             final StockingHeaderInfoModel entity_infoTempHeader = getEntity_StockingInfoHeader(parameter, userParameter);
+            final StockingInfoDetailModel entity_infoTempDetail = getEntity_StockingInfoDetail(parameter, userParameter);
             final List<StockingInfoFileModel> entity_infoTempFile = getEntity_StockingInfoFile(parameter, userParameter, parameter.getSystemMatterId());
 
             stockingHeaderRepository.insertStockingHeader(entity_header);
             stockingInfoTempHeaderRepository.insertDataToTempHeader(entity_infoTempHeader);
+            stockingInfoTempDetailRepository.insertDataToTempDetail(entity_infoTempDetail);
+            
             
             for(int i=0; i<entity_infoTempFile.size(); i++) {
                 stockingInfoTempFileRepository.insertStockingInfoTempFile(entity_infoTempFile.get(i));
@@ -129,7 +133,22 @@ public class StockingActionProcess extends ActionProcessEventListener {
             throw new WorkflowExternalException("Error Message", e);
         }
         return number;
+        
+        
     }
+    
+    private StockingInfoDetailModel getEntity_StockingInfoDetail(final ActionProcessParameter parameter, final Map<String, Object> userParameter) {
+        StockingInfoDetailModel entity = new StockingInfoDetailModel();
+            entity.setSystem_matter_id(parameter.getSystemMatterId());
+            entity.setUser_data_id(parameter.getUserDataId());
+            entity.setNama_produk(getEntity_TryCatch_UserParameter(userParameter , "f_nama_produk"));
+            entity.setKategori(getEntity_TryCatch_UserParameter(userParameter , "f_kategori"));
+            entity.setHarga(getEntity_TryCatch_UserParameter(userParameter , "f_harga"));
+            entity.setStok(getEntity_TryCatch_UserParameter(userParameter , "f_stok"));
+            entity.setNama_toko(getEntity_TryCatch_UserParameter(userParameter , "f_nama_toko"));               
+            return entity;
+    		}
+
     
     private List<StockingInfoFileModel> getEntity_StockingInfoFile(final ActionProcessParameter parameter, final Map<String, Object> userParameter, String system_matter_id) {
         List<StockingInfoFileModel> result = new ArrayList<StockingInfoFileModel>();
@@ -145,7 +164,7 @@ public class StockingActionProcess extends ActionProcessEventListener {
             List<String> varFileRealName = (List<String>)userParameter.get("f_contract_upload_file_real_name");
             
             for(int i=0; i<varId.size(); i++) {
-            	StockingInfoFileModel entity = new StockingInfoFileModel();
+                StockingInfoFileModel entity = new StockingInfoFileModel();
                 entity.setId(Integer.parseInt(varId.get(i)));
                 entity.setSystem_matter_id(parameter.getSystemMatterId());
                 entity.setUser_data_id(parameter.getUserDataId());
@@ -184,6 +203,8 @@ public class StockingActionProcess extends ActionProcessEventListener {
         }
         return result;
     }
+    
+    
     
     @Override
     public String applyFromTempSave(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
