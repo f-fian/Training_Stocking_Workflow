@@ -2,7 +2,8 @@ package drose.stocking.app;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import drose.stocking.model.StockForm;
+import drose.stocking.service.app.StockingWorkflowService;
+
 import org.springframework.ui.Model;
 import jp.co.intra_mart.foundation.workflow.code.PageType;
 import jp.co.intra_mart.foundation.service.client.information.Identifier;
@@ -13,7 +14,7 @@ public class StockingController {
     
     
     @RequestMapping(value = "apply")
-    public final String apply(final Model model, StockForm stockForm) throws Exception {
+    public final String apply(final Model model, StockingForm stockForm) throws Exception {
         
         if (PageType.pageTyp_App.toString().equals(stockForm.getImwPageType())) {
             // Apply Screen
@@ -34,5 +35,18 @@ public class StockingController {
 //      model.addAttribute("ContractFormClassRows", ContractFormClassRows);
         model.addAttribute("StockForm", stockForm);
         return "drose/stocking/apply.jsp";
+    }
+    
+    
+    @RequestMapping(value = "detail")
+    public final String detail(final Model model, final StockingForm StockingForm) throws Exception {
+        StockingWorkflowService stockingService = new StockingWorkflowService();
+        StockingForm StockingFormClassRows = new StockingForm();
+        StockingFormClassRows = stockingService.getStockingInfoTemp(StockingForm.getImwSystemMatterId());
+//      JSONObject dataJSON = stockingService.getRequestBodyFullSale(StockingForm.getImwSystemMatterId());
+//      System.out.println(dataJSON);
+        model.addAttribute("StockingFormClassRows", StockingFormClassRows);
+        model.addAttribute("StockingForm", StockingForm);
+        return "drose/stocking/detail.jsp";
     }
 }

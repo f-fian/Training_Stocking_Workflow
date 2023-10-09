@@ -100,6 +100,62 @@ public class StockingActionProcess extends ActionProcessEventListener {
         return entity;
     }
     
+    @SuppressWarnings("unchecked")
+	private List<StockingInfoDetailModel> getEntity_StockingInfoDetail(final ActionProcessParameter parameter, final Map<String, Object> userParameter) {
+        List<StockingInfoDetailModel> result = new ArrayList<StockingInfoDetailModel>();
+      
+        try {
+            List<String> var_id = (List<String>)userParameter.get("stocking_detail_id");
+            List<String> var_nama_produk = (List<String>)userParameter.get("f_nama_produk");
+            List<String> var_kategori = (List<String>)userParameter.get("f_kategori");
+            List<String> var_harga = (List<String>)userParameter.get("f_harga");
+            List<String> var_stok = (List<String>) userParameter.get("f_stok");
+            String var_nama_toko = (String) userParameter.get("f_nama_toko");
+            System.out.println(var_id.size());
+            System.out.println("sini");
+            for(int i=0; i < var_id.size(); i++) {
+                StockingInfoDetailModel entity = new StockingInfoDetailModel();
+                entity.setId(Integer.parseInt(var_id.get(i)));
+                entity.setSystem_matter_id(parameter.getSystemMatterId());
+                entity.setUser_data_id(parameter.getUserDataId());
+                
+                entity.setNama_produk(getEntity_TryCatch_String(var_nama_produk , i));
+                entity.setKategori(getEntity_TryCatch_String(var_kategori , i));
+                entity.setHarga(getEntity_TryCatch_String(var_harga , i));
+                entity.setStok(getEntity_TryCatch_String(var_stok , i));
+                entity.setNama_toko(var_nama_toko);
+                
+                result.add(entity);
+                /*
+                if(!entity.getT059z_witht().equals("") && !entity.getT059z_withtcd().equals("")) {
+                    if(!entity.getT059z_witht().equals("-") && !entity.getT059z_withtcd().equals("-")) {
+                     result.add(entity);
+                    }
+                }
+                */
+            }
+        } catch (Exception e) {
+            StockingInfoDetailModel entity = new StockingInfoDetailModel();
+            
+            try {
+                entity.setId(Integer.parseInt(userParameter.get("detail_id").toString()));
+                entity.setSystem_matter_id(parameter.getSystemMatterId());
+                entity.setUser_data_id(parameter.getUserDataId());
+                
+                entity.setNama_produk(getEntity_TryCatch_UserParameter(userParameter, "f_nama_produk"));
+                entity.setKategori(getEntity_TryCatch_UserParameter(userParameter, "f_kategori"));
+                entity.setHarga(getEntity_TryCatch_UserParameter(userParameter, "f_harga"));
+                entity.setStok(getEntity_TryCatch_UserParameter(userParameter, "f_stok"));
+                entity.setNama_toko(getEntity_TryCatch_UserParameter(userParameter, "nama_produk"));
+                result.add(entity);
+            } catch (Exception e2) {
+                System.out.println("no detail entity" + e2);
+            }
+        }
+        
+        return result;
+    }
+
     @Override
     public String apply(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
         System.out.println("----- ActionProcessParameter - apply -----");
@@ -117,13 +173,15 @@ public class StockingActionProcess extends ActionProcessEventListener {
             
             final StockingHeaderModel entity_header = getEntity_StockingHeader(parameter, userParameter);
             final StockingHeaderInfoModel entity_infoTempHeader = getEntity_StockingInfoHeader(parameter, userParameter);
-            final StockingInfoDetailModel entity_infoTempDetail = getEntity_StockingInfoDetail(parameter, userParameter);
+            final List<StockingInfoDetailModel> entity_infoTempDetail = getEntity_StockingInfoDetail(parameter, userParameter);
             final List<StockingInfoFileModel> entity_infoTempFile = getEntity_StockingInfoFile(parameter, userParameter, parameter.getSystemMatterId());
 
             stockingHeaderRepository.insertStockingHeader(entity_header);
             stockingInfoTempHeaderRepository.insertDataToTempHeader(entity_infoTempHeader);
-            stockingInfoTempDetailRepository.insertDataToTempDetail(entity_infoTempDetail);
             
+            for(int i=0; i<entity_infoTempDetail.size(); i++) {
+                stockingInfoTempDetailRepository.insertDataToTempDetail(entity_infoTempDetail.get(i));
+            }
             
             for(int i=0; i<entity_infoTempFile.size(); i++) {
                 stockingInfoTempFileRepository.insertStockingInfoTempFile(entity_infoTempFile.get(i));
@@ -136,18 +194,6 @@ public class StockingActionProcess extends ActionProcessEventListener {
         
         
     }
-    
-    private StockingInfoDetailModel getEntity_StockingInfoDetail(final ActionProcessParameter parameter, final Map<String, Object> userParameter) {
-        StockingInfoDetailModel entity = new StockingInfoDetailModel();
-            entity.setSystem_matter_id(parameter.getSystemMatterId());
-            entity.setUser_data_id(parameter.getUserDataId());
-            entity.setNama_produk(getEntity_TryCatch_UserParameter(userParameter , "f_nama_produk"));
-            entity.setKategori(getEntity_TryCatch_UserParameter(userParameter , "f_kategori"));
-            entity.setHarga(getEntity_TryCatch_UserParameter(userParameter , "f_harga"));
-            entity.setStok(getEntity_TryCatch_UserParameter(userParameter , "f_stok"));
-            entity.setNama_toko(getEntity_TryCatch_UserParameter(userParameter , "f_nama_toko"));               
-            return entity;
-    		}
 
     
     private List<StockingInfoFileModel> getEntity_StockingInfoFile(final ActionProcessParameter parameter, final Map<String, Object> userParameter, String system_matter_id) {

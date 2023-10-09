@@ -13,6 +13,27 @@
 	<workflow:workflowOpenPageCsjs />
 	<script src="ui/libs/jquery-validation-1.9.0/jquery.validate.js"></script>
 	<script type="text/javascript">
+		
+	
+		function removeDetailRow(element){
+			var table = document.getElementById('detail-table');
+            var rowCount = table.rows.length;
+            if(rowCount <= 2){
+                alert("Minimum 1 product data shold be inserted");
+                return;
+            }
+            if(element){
+                //delete specific row
+                element.parentNode.parentNode.remove();
+            }else{
+                //delete last row
+                table.deleteRow(rowCount-1);
+            }
+			
+		}
+		
+		
+	
 		var rules = {
 			f_nama_produk : {
 				required : true
@@ -109,9 +130,9 @@
 				$(".stocking_insert_detail").append("<tr>"
 						+"<td style='display:none;'><input type='hidden' name='stocking_detail_id' value="+stocking_detail_id+"></td> "
 						+"<td><input type='text' class='f_nama_produk' name='f_nama_produk' "
-						+"style='width: 170px;' /></td> " 
+						+"style='width: 135px;' /></td> " 
 						+"<td><select name='f_kategori' class='f_kategori' "
-						+"   style='width: 170px;'> "
+						+"   style='width: 135px;'> "
 						+"      <option value='' selected disabled>Select Category :</option> "
 						+"     <option value='sepatuLari'>Sepatu Lari</option> "
 						+"      <option value='sepatuFutsal'>Sepatu Futsal</option> "
@@ -127,9 +148,11 @@
 						+"      <option value='shuttleCock'>ShuttleCock</option> "
 						+" </select></td> "
 						+"<td><input type='number' class='f_harga' name='f_harga' "
-						+"style='width: 170px;' /></td> " 
+						+"style='width: 135px;' /></td> " 
 						+"<td><input type='number' class='f_stok' name='f_stok' "
-						+"style='width: 170px;' /></td> " 
+						+"style='width: 135px;' /></td> " 
+						+"<td><input type='button' value='Delete' onClick='removeDetailRow(this)' "
+						+"style='width: 135px;' /></td> " 
 						+ "</tr>")
 			})
 		});
@@ -185,21 +208,20 @@
 			</div>
 
 			<table class="imui-form">
-				<tbody>
+				<tbody>	
 					<tr>
 						<th><label for="f_nama_toko">Nama Toko</label></th>
-						<td><input type="text" id="f_nama_toko" name="f_nama_toko"
-							style="width: 170px;"></td>
+						<td><input type="text" class="f_nama_toko" name="f_nama_toko"
+							style="width: 135px;"></td>
 					</tr>
 					<tr>
 						<th><label for="f_alamat">Alamat</label></th>
-						<td><input type="text" id="f_alamat" name="f_alamat"
-							style="width: 170px;"></td>
+						<td><input type="text" class="f_alamat" name="f_alamat"
+							style="width: 135px;"></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-
 		<div style="overflow-x: scroll"
 			class="imui-box-article horizontal-scroll-wrapper squares">
 			<div class="imui-form-container-full">
@@ -209,20 +231,23 @@
 				<div class="imui-operation-parts">
 					<input type="button" value='Add Detail' id="addDetail"
 						name="addDetail" class="imui-small-button" />
+					<input type="button" value='removeDetail' onClick="removeDetailRow()" id='removeDetail'
+						name="removeDetail" class="imui-small-button" />
 				</div>
-				<table class="imui-form">
+				<table class="imui-form" id="detail-table">
 					<tr>
-						<th style="width: 170px;"><label for="f_nama_produk" >Nama Produk</label></th>
-						<th style="width: 170px;"><label for="f_kategori">Kategori</label></th>
-						<th style="width: 170px;"><label for="harga">harga</label></th>
-						<th style="width: 170px;"><label for="stok">Stok</label></th>
+						<th style="width: 135px;"><label for="f_nama_produk" >Nama Produk</label></th>
+						<th style="width: 135px;"><label for="f_kategori">Kategori</label></th>
+						<th style="width: 135px;"><label for="harga">harga</label></th>
+						<th style="width: 135px;"><label for="stok">Stok</label></th>
+						<th style="width: 135px;"><label for="stok">Delete</label></th>
 					</tr>
 					<tbody class="stocking_insert_detail">
 						<tr>
 							<td style="display:none;"><input type="hidden" name="stocking_detail_id" value="1"></td>
-							<td><input type="text" class="f_nama_produk" name="f_nama_produk" style="width: 170px;" /></td>
+							<td><input type="text" class="f_nama_produk" name="f_nama_produk" style="width: 135px;" /></td>
 							<td><select name="f_kategori" class="f_kategori"
-								style="width: 170px;">
+								style="width: 135px;">
 									<option value="" selected disabled>Select Category :</option>
 									<option value="sepatuLari">Sepatu Lari</option>
 									<option value="sepatuFutsal">Sepatu Futsal</option>
@@ -238,9 +263,11 @@
 									<option value="shuttleCock">ShuttleCock</option>
 							</select></td>
 							<td><input type="number" class="f_harga" name="f_harga"
-								style="width: 170px;"></td>
+								style="width: 135px;"></td>
 							<td><input type="number" class="f_stok" name="f_stok"
-								style="width: 170px;"></td>
+								style="width: 135px;"></td>
+							<td><input type='button' value='Delete' onClick="removeDetailRow(this)" 
+							style='width: 135px;' /></td>
 						</tr>
 					</tbody>
 				</table>

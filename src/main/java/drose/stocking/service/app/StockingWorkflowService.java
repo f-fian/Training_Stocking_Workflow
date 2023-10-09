@@ -2,7 +2,7 @@ package drose.stocking.service.app;
 
 import java.util.*;
 
-import drose.stocking.model.StockForm;
+import drose.stocking.app.StockingForm;
 import drose.stocking.model.StockingHeaderInfoModel;
 import drose.stocking.model.StockingInfoDetailModel;
 import drose.stocking.model.StockingInfoFileModel;
@@ -49,18 +49,18 @@ public class StockingWorkflowService {
         return true;
     }
     
-    public final StockForm getContractInfoTemp(String systemMatterId) throws Exception {
+    public final StockingForm getStockingInfoTemp(String systemMatterId) throws Exception {
         Collection<StockingHeaderInfoModel> rows_info_temp_header = infoHeaderRepository.selectStockingInfoTempHeader(systemMatterId);
         Collection<StockingInfoDetailModel> rows_info_temp_detail = infoDetailRepository.selectStockingInfoTempDetail(systemMatterId);
         Collection<StockingInfoFileModel> rows_info_temp_file = infoFileRepository.selectStockingInfoTempFile(systemMatterId, "system_matter_id");
         return setStockingInfoForm(rows_info_temp_header, rows_info_temp_detail, rows_info_temp_file);
     }
     
-    public final StockForm setStockingInfoForm(Collection<StockingHeaderInfoModel> rows_info_temp_header, 
+    public final StockingForm setStockingInfoForm(Collection<StockingHeaderInfoModel> rows_info_temp_header, 
             Collection<StockingInfoDetailModel> rows_info_temp_budget, Collection<StockingInfoFileModel> rows_info_temp_file) {
             
             StockingHeaderInfoModel StockingInfoTempHeaderRows = rows_info_temp_header.iterator().next();
-            StockForm result = new StockForm();
+            StockingForm result = new StockingForm();
             try {
                 result.setNama_toko(StockingInfoTempHeaderRows.getNama_toko());
                 result.setAlamat(StockingInfoTempHeaderRows.getAlamat());
