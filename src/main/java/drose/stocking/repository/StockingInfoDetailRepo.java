@@ -37,7 +37,7 @@ public class StockingInfoDetailRepo {
             result.add("kategori", tempDetail.getKategori());
             result.add("harga", tempDetail.getHarga());
             result.add("stok", tempDetail.getStok());
-            result.add("nama_toko", tempDetail.getNama_toko());
+            result.add("nama_toko",tempDetail.getNama_toko());
             sqlManager.insert("wf_stocking_temp_info_detail", result);
         } catch (Exception e) {
             e.printStackTrace();
