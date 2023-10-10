@@ -57,13 +57,18 @@ public class StockingWorkflowService {
     }
     
     public final StockingForm setStockingInfoForm(Collection<StockingHeaderInfoModel> rows_info_temp_header, 
-            Collection<StockingInfoDetailModel> rows_info_temp_budget, Collection<StockingInfoFileModel> rows_info_temp_file) {
+            Collection<StockingInfoDetailModel> rows_info_temp_detail, Collection<StockingInfoFileModel> rows_info_temp_file) {
             
             StockingHeaderInfoModel StockingInfoTempHeaderRows = rows_info_temp_header.iterator().next();
+            List<StockingInfoDetailModel> stockingInfoDetailModel =(List<StockingInfoDetailModel>) rows_info_temp_detail;
+            List<StockingInfoFileModel> stockingInfoFileModel =(List<StockingInfoFileModel>) rows_info_temp_file;
             StockingForm result = new StockingForm();
+          
             try {
                 result.setNama_toko(StockingInfoTempHeaderRows.getNama_toko());
                 result.setAlamat(StockingInfoTempHeaderRows.getAlamat());
+                result.setFileData(stockingInfoFileModel);
+                result.setDetailData(stockingInfoDetailModel);
             } catch (Exception e) {
                 System.out.println(e);
             }

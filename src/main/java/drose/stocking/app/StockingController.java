@@ -39,14 +39,12 @@ public class StockingController {
     
     
     @RequestMapping(value = "detail")
-    public final String detail(final Model model, final StockingForm StockingForm) throws Exception {
+    public final String detail(final Model model, final StockingForm stockingForm) throws Exception {
         StockingWorkflowService stockingService = new StockingWorkflowService();
-        StockingForm StockingFormClassRows = new StockingForm();
-        StockingFormClassRows = stockingService.getStockingInfoTemp(StockingForm.getImwSystemMatterId());
-//      JSONObject dataJSON = stockingService.getRequestBodyFullSale(StockingForm.getImwSystemMatterId());
-//      System.out.println(dataJSON);
-        model.addAttribute("StockingFormClassRows", StockingFormClassRows);
-        model.addAttribute("StockingForm", StockingForm);
+        StockingForm stockingFormClassRows = new StockingForm();
+        stockingFormClassRows = stockingService.getStockingInfoTemp(stockingForm.getImwSystemMatterId());
+        model.addAttribute("StockingFormClassRows", stockingFormClassRows);
+        model.addAttribute("StockingForm", stockingForm);
         return "drose/stocking/detail.jsp";
     }
 }

@@ -12,13 +12,12 @@ public class StockingInfoHeaderRepo {
     
     String listColumnInsertInfoHeader = "system_matter_id, "
             + "user_data_id, "
-            + "type_contract, "
             + "nama_toko,"
             + "alamat ";
     
-    private String selectContractInfoTempHeaderSystemMatterId = "SELECT "
+    private String selectStockingInfoTempHeaderSystemMatterId = "SELECT "
             + listColumnInsertInfoHeader
-            + "FROM wf_i_gpr_contract_info_temp_header WHERE system_matter_id = ?";
+            + "FROM wf_stocking_temp_info_header WHERE system_matter_id = ?";
 
     public void insertDataToTempHeader(StockingHeaderInfoModel tempHeader) throws Exception {
         try {
@@ -39,7 +38,7 @@ public class StockingInfoHeaderRepo {
         try {
             SQLManager sqlManager = new SQLManager();
             Collection<Object> parameters = new ArrayList<Object>();
-            String select_query = selectContractInfoTempHeaderSystemMatterId;
+            String select_query = selectStockingInfoTempHeaderSystemMatterId;
             parameters.add(select_value);
             Collection<StockingHeaderInfoModel> result = sqlManager.select(StockingHeaderInfoModel.class, select_query, parameters);
             return result;

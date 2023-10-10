@@ -135,10 +135,11 @@ public class StockingActionProcess extends ActionProcessEventListener {
                 */
             }
         } catch (Exception e) {
+        	System.out.println("not array data" + e);
             StockingInfoDetailModel entity = new StockingInfoDetailModel();
             
             try {
-                entity.setId(Integer.parseInt(userParameter.get("detail_id").toString()));
+                entity.setId(Integer.parseInt(userParameter.get("stocking_detail_id").toString()));
                 entity.setSystem_matter_id(parameter.getSystemMatterId());
                 entity.setUser_data_id(parameter.getUserDataId());
                 
@@ -146,7 +147,7 @@ public class StockingActionProcess extends ActionProcessEventListener {
                 entity.setKategori(getEntity_TryCatch_UserParameter(userParameter, "f_kategori"));
                 entity.setHarga(getEntity_TryCatch_UserParameter(userParameter, "f_harga"));
                 entity.setStok(getEntity_TryCatch_UserParameter(userParameter, "f_stok"));
-                entity.setNama_toko(getEntity_TryCatch_UserParameter(userParameter, "nama_produk"));
+                entity.setNama_toko((String) userParameter.get("f_nama_toko"));
                 result.add(entity);
             } catch (Exception e2) {
                 System.out.println("no detail entity" + e2);

@@ -12,15 +12,14 @@ public class StockingInfoFileRepo {
 			+ "system_matter_id, "
 			+ "file_name, "
 			+ "file_path, "
-			+ "file_real_name, "
-			+ "updated_at ";	
+			+ "file_real_name ";	
 	
-	private String selectContractInfoTempFileSystemMatterId = "SELECT "
+	private String selectStockingInfoTempFileSystemMatterId = "SELECT "
 			+ listColumn
-			+ "FROM wf_i_gpr_contract_info_temp_file WHERE system_matter_id = ? ";
+			+ "FROM wf_stocking_temp_info_file WHERE system_matter_id = ? ";
 	private String selectContractInfoTempFileId = "SELECT "
 			+ listColumn
-			+ "FROM wf_i_gpr_contract_info_temp_file WHERE id = ?";
+			+ "FROM wf_stocking_temp_info_file WHERE id = ?";
 	
 	
 	public void insertStockingInfoTempFile(StockingInfoFileModel stockingInfoFileModel) throws Exception {
@@ -45,7 +44,7 @@ public class StockingInfoFileRepo {
 				select_query = selectContractInfoTempFileId;
 				parameters.add(Integer.parseInt(value) );
 			} else if(select_where.equals("system_matter_id")) {
-				select_query = selectContractInfoTempFileSystemMatterId;
+				select_query = selectStockingInfoTempFileSystemMatterId;
 				parameters.add(value);
 			}
 			Collection<StockingInfoFileModel> result = sqlManager.select(StockingInfoFileModel.class, select_query, parameters);
@@ -55,6 +54,7 @@ public class StockingInfoFileRepo {
 			throw new Exception("DB error in selectContractInfoFile()", e);
 		}
 	}
+	
 	
 	private ColumnValues setStockingInfoTempFileValue(StockingInfoFileModel stockingInfoFileModel) {
 		ColumnValues result = new ColumnValues();

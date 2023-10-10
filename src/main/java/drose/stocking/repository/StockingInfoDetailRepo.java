@@ -16,7 +16,7 @@ public class StockingInfoDetailRepo {
             + "harga, "
             + "stok ";
     
-    private String selectContractInfoTempHeaderSystemMatterId = "SELECT "
+    private String selectStockingInfoTempHeaderSystemMatterId = "SELECT "
             + listColumnInsertInfoHeader
             + "FROM wf_stocking_temp_info_detail WHERE system_matter_id = ?";
     
@@ -50,7 +50,7 @@ public class StockingInfoDetailRepo {
         try {
             SQLManager sqlManager = new SQLManager();
             Collection<Object> parameters = new ArrayList<Object>();
-            String select_query = selectContractInfoTempHeaderSystemMatterId;
+            String select_query = selectStockingInfoTempHeaderSystemMatterId;
             parameters.add(select_value);
             Collection<StockingInfoDetailModel> result = sqlManager.select(StockingInfoDetailModel.class, select_query, parameters);
             return result;

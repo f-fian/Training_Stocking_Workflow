@@ -1,7 +1,9 @@
 package drose.stocking.app;
 
+import java.util.List;
 
-
+import drose.stocking.model.StockingInfoDetailModel;
+import drose.stocking.model.StockingInfoFileModel;
 
 public class StockingForm extends ContractWorkflowForm {
     /* General Information */
@@ -15,24 +17,31 @@ public class StockingForm extends ContractWorkflowForm {
         private String nama_toko;
         private String status ;
         private String alamat;
+        
+        private List<StockingInfoFileModel> fileData;
+        private List<StockingInfoDetailModel> detailData;
 
         // file info to temp file
         
         
-        public StockingForm() {
-        }
+        public List<StockingInfoFileModel> getFileData() {
+			return fileData;
+		}
 
-//      public StockForm(String nama_produk, String kategori, String harga, String stock, String nama_toko, String status,
-//              String alamat) {
-//          super();
-//          this.nama_produk = nama_produk;
-//          this.kategori = kategori;
-//          this.harga = harga; 
-//          this.stock = stock;
-//          this.nama_toko = nama_toko;
-//          this.status = status;
-//          this.alamat = alamat;
-//      }
+		public void setFileData(List<StockingInfoFileModel> fileData) {
+			this.fileData = fileData;
+		}
+
+		public List<StockingInfoDetailModel> getDetailData() {
+			return detailData;
+		}
+
+		public void setDetailData(List<StockingInfoDetailModel> detailData) {
+			this.detailData = detailData;
+		}
+
+		public StockingForm() {
+        }
 
         public String getNama_produk() {
             return nama_produk;
