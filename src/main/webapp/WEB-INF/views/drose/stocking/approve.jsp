@@ -15,48 +15,25 @@
     uri="http://www.intra-mart.co.jp/taglib/im-tenant"%>
 
 <imui:head>
-    <title>Stocking Registration Workflow</title>
+    <title>Stocking Approval Workflow</title>
 
     <workflow:workflowOpenPageCsjs />
     <script type="text/javascript">
-    /* $(function(){
-        $(document).ready(function(){
-            if($('#f_type_contract_baru').prop('checked')){
-                $('.    ').hide();
-            }else if($('#f_type_contract_ekstensi').prop('checked')){
-                $('.row_kontrak_sebelumnya').show();
-            }
-        });
+    $(function(){
+    	
+    	$('#openPage').click(function(){
+			imuiResetForm('#workflowOpenPageForm');
+			/* if (node == 'operation_node'){
+				if (!imuiValidate('#workflowOpenPageForm', rulesOperation, messagesOperation)) return;
+			}else if (node == 'ga_node'){
+				if (!imuiValidate('#workflowOpenPageForm', rulesGA, messagesGA)) return;
+			} */
+			workflowOpenPage('${f:h(StockingForm.imwPageType)}');
+			return false;
+		});
+    	
         
-        $("#close").click(function(){
-            window.close();
-            return false;
-        });
-        
-        $('.f_rental_price').mask("#,##0", {reverse: true});
-        $('.f_cost_own_risk').mask("#,##0", {reverse: true});
-        $('.f_budget_replace').mask("#,##0", {reverse: true});
-        $('.f_budget_maintenance').mask("#,##0", {reverse: true});
-        $('.f_budget_stnk_keur').mask("#,##0", {reverse: true});
-        $('.f_budget_accessories').mask("#,##0", {reverse: true});
-        $('.f_total_budget').mask("#,##0", {reverse: true});
-        
-        $(':radio:not(:checked)').attr('disabled', true);
-    }); */
-	/* var stocking_detail_id = 1;
-    $(".stocking_insert_detail").append("<tr>"
-            +"<td style='display:none;'><input type='hidden' name='stocking_detail_id' value="+stocking_detail_id+"></td> "
-            +"<td><input type='text' class='f_nama_produk' readonly value="+temp_nama_produk+" name='f_nama_produk' "
-            +"style='width: 135px;' /></td> " 
-            +"<td><input type='text' class='f_kategori' readonly value="+temp_kategori+" name='f_kategori' "
-            +"style='width: 135px;' /></td> " 
-            +"<td><input type='number' class='f_harga' readonly value="+temp_harga+" name='f_harga' "
-            +"style='width: 135px;' /></td> " 
-            +"<td><input type='number' class='f_stok' readonly value="+temp_stok+" name='f_stok' "
-            +"style='width: 135px;' /></td> " 
-            +"<td><input type='button' value='Delete' onClick='removeDetailRow(this)' "
-            +"style='width: 135px;' /></td> " 
-            + "</tr>") */
+    })
 </script>
     <style>
 input[type=text] {
@@ -69,16 +46,9 @@ input[type=text] {
 </style>
 </imui:head>
 
-<workflow:workflowUserContentsAuth
-    imwApplyBaseDate='${f:h(StockingForm.imwApplyBaseDate)}'
-    imwAuthUserCode='${f:h(StockingForm.imwAuthUserCode)}'
-    imwFlowId='${f:h(StockingForm.imwFlowId)}'
-    imwNodeId='${f:h(StockingForm.imwNodeId)}'
-    imwPageType='${f:h(StockingForm.imwPageType)}'
-    imwSystemMatterId='${f:h(StockingForm.imwSystemMatterId)}'
-    imwUserDataId='${f:h(StockingForm.imwUserDataId)}' />
+
 <div class="imui-title-small-window">
-    <h1>Product detail Workflow</h1>
+    <h1>Product Approval Workflow</h1>
 </div>
 <div class="imui-toolbar-wrap">
     <div class="imui-toolbar-inner">
@@ -99,6 +69,30 @@ input[type=text] {
         </imart:condition>
     </div>
 </div>
+
+<workflow:workflowUserContentsAuth
+    imwApplyBaseDate='${f:h(StockingForm.imwApplyBaseDate)}'
+    imwAuthUserCode='${f:h(StockingForm.imwAuthUserCode)}'
+    imwFlowId='${f:h(StockingForm.imwFlowId)}'
+    imwNodeId='${f:h(StockingForm.imwNodeId)}'
+    imwPageType='${f:h(StockingForm.imwPageType)}'
+    imwSystemMatterId='${f:h(StockingForm.imwSystemMatterId)}'
+    imwUserDataId='${f:h(StockingForm.imwUserDataId)}' />
+
+
+
+<workflow:workflowOpenPage name="workflowOpenPageForm"
+           id="workflowOpenPageForm"
+           method="POST"
+           target="_top"
+           imwUserDataId="${f:h(StockingForm.imwUserDataId)}"
+           imwSystemMatterId="${f:h(StockingForm.imwSystemMatterId)}"
+           imwAuthUserCode="${f:h(StockingForm.imwAuthUserCode)}"
+           imwApplyBaseDate="${f:h(StockingForm.imwApplyBaseDate)}"
+           imwNodeId="${f:h(StockingForm.imwNodeId)}"
+           imwFlowId="${f:h(StockingForm.imwFlowId)}"
+           imwCallOriginalParams="${f:h(StockingForm.imwCallOriginalParams)}"
+           imwNextScriptPath="${f:h(StockingForm.imwCallOriginalPagePath)}">
 <div class="imui-form-container-wide">
     <div class="imui-form-container-full">
         <header class="imui-chapter-title">
@@ -113,8 +107,8 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <label><input value="option_baru" ${ContractFormClassRows.type_contract_option_baru} name="f_type_contract" id="f_type_contract_baru" type="radio" /> Baru</label><br>
-                        <label><input value="option_ekstensi" ${ContractFormClassRows.type_contract_option_ekstensi} name="f_type_contract" id="f_type_contract_ekstensi" type="radio" /> Ekstensi</label><br>
+                        <label><input value="option_baru" ${StockingFormClassRows.type_contract_option_baru} name="f_type_contract" id="f_type_contract_baru" type="radio" /> Baru</label><br>
+                        <label><input value="option_ekstensi" ${StockingFormClassRows.type_contract_option_ekstensi} name="f_type_contract" id="f_type_contract_ekstensi" type="radio" /> Ekstensi</label><br>
                     </td>
                 </tr>
                 <tr>
@@ -124,7 +118,7 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <input value="${ContractFormClassRows.company_name}" readonly name="f_company_name" id="f_company_name" class="imui-text-readonly" type="text" size="50"/>
+                        <input value="${StockingFormClassRows.company_name}" readonly name="f_company_name" id="f_company_name" class="imui-text-readonly" type="text" size="50"/>
                     </td>
                 </tr>
                 <tr class="row_kontrak_sebelumnya">
@@ -134,8 +128,8 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <input value="${ContractFormClassRows.id_contract_before}" name="f_id_contract_before" id="f_id_contract_before" type="hidden" />
-                        <input value="${ContractFormClassRows.no_contract_previous}" readonly class="imui-text-readonly" type="text"/>
+                        <input value="${StockingFormClassRows.id_contract_before}" name="f_id_contract_before" id="f_id_contract_before" type="hidden" />
+                        <input value="${StockingFormClassRows.no_contract_previous}" readonly class="imui-text-readonly" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -145,7 +139,7 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <input value="${ContractFormClassRows.no_contract}" readonly name="f_no_contract" id="f_no_contract" class="imui-text-readonly" type="text" size="50" placeholder="Nomor Kontrak"/>
+                        <input value="${StockingFormClassRows.no_contract}" readonly name="f_no_contract" id="f_no_contract" class="imui-text-readonly" type="text" size="50" placeholder="Nomor Kontrak"/>
                     </td>
                 </tr>
                 <tr>
@@ -155,7 +149,7 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <input value="${ContractFormClassRows.name_sign_contract}" readonly name="f_name_sign_contract" id="f_name_sign_contract" class="imui-text-readonly" type="text" size="50" placeholder="Nama Penandatangan Perjanjian"/>
+                        <input value="${StockingFormClassRows.name_sign_contract}" readonly name="f_name_sign_contract" id="f_name_sign_contract" class="imui-text-readonly" type="text" size="50" placeholder="Nama Penandatangan Perjanjian"/>
                     </td>
                 </tr>
                 <tr>
@@ -165,7 +159,7 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <input value="${ContractFormClassRows.no_telp}" readonly name="f_no_telp" id="f_no_telp" class="imui-text-readonly" type="text" size="50" placeholder="No. Telephone"/>
+                        <input value="${StockingFormClassRows.no_telp}" readonly name="f_no_telp" id="f_no_telp" class="imui-text-readonly" type="text" size="50" placeholder="No. Telephone"/>
                     </td>
                 </tr>
                 <tr>
@@ -175,7 +169,7 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <input value="${ContractFormClassRows.total_unit}" readonly name="f_total_unit" id="f_total_unit" class="imui-text-readonly" type="text" size="50" placeholder="Total Unit"/>
+                        <input value="${StockingFormClassRows.total_unit}" readonly name="f_total_unit" id="f_total_unit" class="imui-text-readonly" type="text" size="50" placeholder="Total Unit"/>
                     </td>
                 </tr>
                 <tr>
@@ -185,7 +179,7 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <input value="${ContractFormClassRows.start_contract}" readonly name="f_start_contract" id="f_start_contract" class="imui-text-readonly" type="text" size="50" placeholder="Start Sewa (yyyy/MM/dd)" />
+                        <input value="${StockingFormClassRows.start_contract}" readonly name="f_start_contract" id="f_start_contract" class="imui-text-readonly" type="text" size="50" placeholder="Start Sewa (yyyy/MM/dd)" />
                     </td>
                 </tr>
                 <tr>
@@ -195,7 +189,7 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <input value="${ContractFormClassRows.periode}" readonly name="f_periode_months" id="f_periode_months" class="imui-text-readonly" type="text" size="10" onchange="getEndContract(this.value)" placeholder="Periode"> 
+                        <input value="${StockingFormClassRows.periode}" readonly name="f_periode_months" id="f_periode_months" class="imui-text-readonly" type="text" size="10" onchange="getEndContract(this.value)" placeholder="Periode"> 
                     </td>
                 </tr>
                 <tr>
@@ -205,7 +199,7 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <input value="${ContractFormClassRows.end_contract}" readonly name="f_end_contract" id="f_end_contract" class="imui-text-readonly" type="text" size="50" placeholder="End Sewa (yyyy/MM/dd)"/>
+                        <input value="${StockingFormClassRows.end_contract}" readonly name="f_end_contract" id="f_end_contract" class="imui-text-readonly" type="text" size="50" placeholder="End Sewa (yyyy/MM/dd)"/>
                     </td>
                 </tr>
                 <tr>
@@ -215,8 +209,8 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <label><input value="option_tunai" ${ContractFormClassRows.type_payment_option_tunai} name="f_type_payment" id="f_type_payment_tunai" type="radio" /> Tunai</label><br>
-                        <label><input value="option_credit" ${ContractFormClassRows.type_payment_option_credit} name="f_type_payment" id="f_type_payment_credit" type="radio" /> Credit</label><br>
+                        <label><input value="option_tunai" ${StockingFormClassRows.type_payment_option_tunai} name="f_type_payment" id="f_type_payment_tunai" type="radio" /> Tunai</label><br>
+                        <label><input value="option_credit" ${StockingFormClassRows.type_payment_option_credit} name="f_type_payment" id="f_type_payment_credit" type="radio" /> Credit</label><br>
                     </td>
                 </tr>
                 <tr>
@@ -226,8 +220,8 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <input value="${ContractFormClassRows.trade_pattern_code}" type="hidden" name="f_trade_pattern" id="f_trade_pattern"/> 
-                        <input value="${ContractFormClassRows.trade_pattern_code}:${ContractFormClassRows.trade_pattern_name}" readonly class="imui-text-readonly" type="text" size="50" />
+                        <input value="${StockingFormClassRows.trade_pattern_code}" type="hidden" name="f_trade_pattern" id="f_trade_pattern"/> 
+                        <input value="${StockingFormClassRows.trade_pattern_code}:${StockingFormClassRows.trade_pattern_name}" readonly class="imui-text-readonly" type="text" size="50" />
                     </td>
                 </tr>
                 <tr>
@@ -237,7 +231,7 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <input value="${ContractFormClassRows.no_management_approval}" readonly name="f_no_management_approval" id="f_no_management_approval" class="imui-text-readonly" type="text" size="50" placeholder="Nomor Management Approval"/>
+                        <input value="${StockingFormClassRows.no_management_approval}" readonly name="f_no_management_approval" id="f_no_management_approval" class="imui-text-readonly" type="text" size="50" placeholder="Nomor Management Approval"/>
                     </td>
                 </tr>
                 <tr>
@@ -247,7 +241,7 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <input value="${ContractFormClassRows.date_management_approval}" readonly name="f_date_management_approval" id="f_date_management_approval" class="imui-text-readonly" type="text" size="50" placeholder="Tanggal Management (yyyy/MM/dd)"/>
+                        <input value="${StockingFormClassRows.date_management_approval}" readonly name="f_date_management_approval" id="f_date_management_approval" class="imui-text-readonly" type="text" size="50" placeholder="Tanggal Management (yyyy/MM/dd)"/>
                     </td>
                 </tr>
                 <tr>
@@ -257,7 +251,7 @@ input[type=text] {
                         </label>
                     </th>
                     <td>
-                        <input value="${ContractFormClassRows.marketing_name)}" readonly name="f_marketing_name" id="f_marketing_name" class="imui-text-readonly" type="text" size="50" placeholder="Nama Marketing"/>
+                        <input value="${StockingFormClassRows.marketing_name)}" readonly name="f_marketing_name" id="f_marketing_name" class="imui-text-readonly" type="text" size="50" placeholder="Nama Marketing"/>
                     </td>
                 </tr>
             </tbody> --%>
@@ -325,12 +319,12 @@ input[type=text] {
                     </tr>
                     <tbody class="contract_insert_detail">
                         <!-- Loop Item already from data table -->
-                        <c:forEach items="${ContractFormClassRows.d_list_info_temp_budget}" var="v_budget_info">
+                        <c:forEach items="${StockingFormClassRows.d_list_info_temp_budget}" var="v_budget_info">
                         <tr class="contract_get_detail">
                             <td style="display:none;"><input type="hidden" name="budget_id" value="${v_budget_info.id}"></td>
                             <td>
                                 <input value="${v_budget_info.brand_type_varian}" name="f_brand_type_variant" type="hidden" >
-                                <c:forEach items="${ContractFormClassRows.d_list_brandVarianType }" var="v_brandVarianType">
+                                <c:forEach items="${StockingFormClassRows.d_list_brandVarianType }" var="v_brandVarianType">
                                     <c:if test="${v_brandVarianType.id == v_budget_info.brand_type_varian}">
                                         <input type="text" readonly class="imui-text-readonly"
                                          value="${v_brandVarianType.brand}/${v_brandVarianType.type}/${v_brandVarianType.varian}"
@@ -349,7 +343,7 @@ input[type=text] {
                                  size="20" placeholder="Biaya Own Risk (0.00)">
                             </td>
                             <td>
-                                <c:forEach items="${ContractFormClassRows.d_list_vehicleInfo}" var="v_data_vehicle">
+                                <c:forEach items="${StockingFormClassRows.d_list_vehicleInfo}" var="v_data_vehicle">
                                     <c:if test="${v_budget_info.id_vehicle == v_data_vehicle.id}">
                                         <input readonly value="${v_data_vehicle.no_police}" type="text" class="imui-text-readonly" placeholder="No Polisi"/>
                                         <input type="hidden" value="${v_data_vehicle.id}" name="f_id_vehicle" />
@@ -444,4 +438,9 @@ input[type=text] {
             </tbody>
         </table>
     </div>
+</div>
+</workflow:workflowOpenPage>
+
+<div class="imui-operation-parts">
+	<input type="button" value='Process' id="openPage" name="openPage" class="imui-large-button" escapeXml="true" escapeJs="false" />
 </div>

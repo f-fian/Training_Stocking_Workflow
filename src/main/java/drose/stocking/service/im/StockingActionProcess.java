@@ -272,5 +272,25 @@ public class StockingActionProcess extends ActionProcessEventListener {
 
         return number;
     }
+    
+    
+    @Override
+    public void approve(final ActionProcessParameter parameter, final Map<String, Object> userParameter) throws Exception {
+        System.out.println("----- ActionProcessParameter - approve -----");
+        outputLog(parameter);
+        System.out.println("----- ActionProcessParameter - approve -----");
+        
+        try {
+            StockingInfoDetailRepo stockingInfoTempDetailRepo = new StockingInfoDetailRepo();
+            if(parameter.getNodeId().equals("operation_node")) {
+                final List<StockingInfoDetailModel> entity_infoTempDetail = getEntity_StockingInfoDetail(parameter, userParameter);
+                for(int i=0; i<entity_infoTempDetail.size(); i++) {
+                    stockingInfoTempDetailRepo.updateInfoTempDetailOperation(entity_infoTempDetail.get(i));
+                }
+            }
+        } catch (final Exception e) {
+            throw new WorkflowExternalException("Error Message", e);
+        }
+    }
 
 }
