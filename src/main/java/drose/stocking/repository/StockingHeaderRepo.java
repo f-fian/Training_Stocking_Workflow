@@ -14,52 +14,49 @@ import jp.co.intra_mart.foundation.exception.BizApiException;
 import jp.co.intra_mart.foundation.security.exception.AccessSecurityException;
 
 public class StockingHeaderRepo {
-    String listColumn = "id, "
-            + "user_data_id, "
-            + "system_matter_id, "
-            + "status,"
-            + "updated_at ";
-    
-    private String selectStockingHeaderWhereSystemMatterId = "SELECT "
-            + listColumn
+    String listColumn = "id, " + "user_data_id, " + "system_matter_id, " + "status," + "updated_at ";
+
+    private String selectStockingHeaderWhereSystemMatterId = "SELECT " + listColumn
             + "FROM wf_stocking_header WHERE system_matter_id = ?";
-    private String selectStockingHeaderWhereStatus = "SELECT "
-            + listColumn
+    private String selectStockingHeaderWhereStatus = "SELECT " + listColumn
             + "FROM wf_stocking_header WHERE status = ?";
-    
-    public Collection<StockingHeaderModel> selectStockingHeader(String select_value, String find_where) throws Exception {
+
+    public Collection<StockingHeaderModel> selectStockingHeader(String select_value, String find_where)
+            throws Exception {
         try {
             SQLManager sqlManager = new SQLManager();
             Collection<Object> parameters = new ArrayList<Object>();
             String select_query = new String();
             if (find_where.equals("status")) {
                 select_query = selectStockingHeaderWhereStatus;
-            }else if (find_where.equals("system_matter_id")) {
+            } else if (find_where.equals("system_matter_id")) {
                 select_query = selectStockingHeaderWhereSystemMatterId;
             }
             parameters.add(select_value);
-            Collection<StockingHeaderModel> result = sqlManager.select(StockingHeaderModel.class, select_query, parameters);
+            Collection<StockingHeaderModel> result = sqlManager.select(StockingHeaderModel.class, select_query,
+                    parameters);
             return result;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new Exception("DB error in selectContractHeader()", e);
         }
     }
-    
+
     public void insertStockingHeader(StockingHeaderModel StockingHeaderData) throws Exception {
         try {
             SQLManager sqlManager = new SQLManager();
             ColumnValues columnVal = new ColumnValues();
             columnVal = setHeaderValue(StockingHeaderData);
-            
+
             sqlManager.insert("wf_stocking_header", columnVal);
-        } catch (SQLException | AccessSecurityException | IllegalArgumentException | NamingException | BizApiException e) {
+        } catch (SQLException | AccessSecurityException | IllegalArgumentException | NamingException
+                | BizApiException e) {
             e.printStackTrace();
             throw new Exception("DB error in insertContractHeader()", e);
         }
     }
-    
-    public void updateStatusHeader (String systemMatterId, String status) throws Exception {
+
+    public void updateStatusHeader(String systemMatterId, String status) throws Exception {
         try {
             String tableName = "wf_stocking_header";
             SQLManager sqlManager = new SQLManager();
@@ -69,17 +66,18 @@ public class StockingHeaderRepo {
             SearchCondition condition = new SearchCondition();
             condition.addCondition("system_matter_id", systemMatterId);
             sqlManager.update(tableName, columnValues, condition);
-        } catch (SQLException | AccessSecurityException | IllegalArgumentException | NamingException | BizApiException e){
+        } catch (SQLException | AccessSecurityException | IllegalArgumentException | NamingException
+                | BizApiException e) {
             e.printStackTrace();
             throw new Exception("DB error in updateStatusComplete()", e);
         }
     }
-    
+
     public void deleteStockingHeader(String find_query, String find_where) throws Exception {
         try {
             SQLManager sqlManager = new SQLManager();
             SearchCondition searchCondition = new SearchCondition();
-            
+
             if (find_where.equals("id")) {
                 searchCondition.addCondition("id", find_query);
             } else if (find_where.equals("user_data_id")) {
@@ -89,15 +87,16 @@ public class StockingHeaderRepo {
             } else {
                 searchCondition.addCondition("system_matter_id", find_query);
             }
-            
+
             sqlManager.delete("wf_stocking_header", searchCondition);
-        } catch (SQLException | AccessSecurityException | IllegalArgumentException | NamingException | BizApiException e){
+        } catch (SQLException | AccessSecurityException | IllegalArgumentException | NamingException
+                | BizApiException e) {
             e.printStackTrace();
             throw new Exception("DB error in deleteKtbGeneralInfoHeader()", e);
         }
     }
-    
-    private ColumnValues setHeaderValue (StockingHeaderModel ContractHeaderData) {
+
+    private ColumnValues setHeaderValue(StockingHeaderModel ContractHeaderData) {
         ColumnValues result = new ColumnValues();
         result.add("user_data_id", ContractHeaderData.getUser_data_id());
         result.add("system_matter_id", ContractHeaderData.getSystem_matter_id());

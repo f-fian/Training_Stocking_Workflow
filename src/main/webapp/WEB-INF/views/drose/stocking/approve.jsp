@@ -21,6 +21,16 @@
     <script type="text/javascript">
     $(function(){
     	
+    	$('#back').click(function(){
+			$('#backForm').submit();
+			return false;
+		});
+    	
+    	$("#close").click(function(){
+            window.close();
+            return false;
+        });
+    	
     	$('#openPage').click(function(){
 			imuiResetForm('#workflowOpenPageForm');
 			/* if (node == 'operation_node'){
@@ -51,23 +61,15 @@ input[type=text] {
     <h1>Product Approval Workflow</h1>
 </div>
 <div class="imui-toolbar-wrap">
-    <div class="imui-toolbar-inner">
-        <imart:condition validity='${isSmartPhone}' negative="true">
-            <ul class="imui-list-toolbar">
-                <li><workflow:workflowMatterDetailLink
-                        systemMatterId='${f:h(StockingForm.imwSystemMatterId)}'>
-                        <span class="im-workflow-icon-matter-detail mr-5"></span>Details
-                    </workflow:workflowMatterDetailLink></li>
-            </ul>
-        </imart:condition>
-        <imart:condition validity='${imwShortCutAccess}' negative="true">
-            <ul class="imui-list-toolbar-utility">
-                <li><a href="javascript:void(0);" id="close"> <span
-                        class="im-ui-icon-common-16-close mr-5"></span>
-                </a></li>
-            </ul>
-        </imart:condition>
-    </div>
+ 	<div class="imui-toolbar-inner">
+		<ul class="imui-list-toolbar">
+			<li>
+				<a href="javascript:void(0);" id="back">
+					<span class="im-ui-icon-common-16-back"></span>
+				</a>
+			</li>
+		</ul>
+	</div>
 </div>
 
 <workflow:workflowUserContentsAuth
@@ -444,3 +446,8 @@ input[type=text] {
 <div class="imui-operation-parts">
 	<input type="button" value='Process' id="openPage" name="openPage" class="imui-large-button" escapeXml="true" escapeJs="false" />
 </div>
+
+
+<form name="backForm" id="backForm" method="POST" action="${f:h(StockForm.imwCallOriginalPagePath)}">
+	<input type="hidden" name=imwCallOriginalParams value="${f:h(StockForm.imwCallOriginalParams)}" />
+</form>

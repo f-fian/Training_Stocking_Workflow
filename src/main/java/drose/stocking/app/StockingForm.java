@@ -20,11 +20,10 @@ public class StockingForm extends ContractWorkflowForm {
         
         private List<StockingInfoFileModel> fileData;
         private List<StockingInfoDetailModel> detailData;
+        
+  
 
-        // file info to temp file
-        
-        
-        public List<StockingInfoFileModel> getFileData() {
+		public List<StockingInfoFileModel> getFileData() {
 			return fileData;
 		}
 

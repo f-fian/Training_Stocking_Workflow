@@ -4,7 +4,7 @@ import drose.stocking.repository.StockingHeaderRepo;
 import drose.stocking.repository.StockingInfoDetailRepo;
 import drose.stocking.repository.StockingInfoFileRepo;
 import drose.stocking.repository.StockingInfoHeaderRepo;
-import drose.stocking.service.app.StockingWorkflowService;
+//import drose.stocking.service.app.StockingWorkflowService;
 import jp.co.intra_mart.foundation.workflow.plugin.process.matter_end.MatterEndProcessParameter;
 import jp.co.intra_mart.foundation.workflow.plugin.process.matter_end.MatterEndProcessEventListener;
 
@@ -22,20 +22,20 @@ public class StockingMatterEndProcess extends MatterEndProcessEventListener {
     @Override
     public boolean execute(final MatterEndProcessParameter parameter) throws Exception {
         outputLog(parameter);
-        StockingWorkflowService stockingService = new StockingWorkflowService();
+//        StockingWorkflowService stockingService = new StockingWorkflowService();
         //Repository
         StockingHeaderRepo headerRepository = new StockingHeaderRepo();
         StockingInfoHeaderRepo infoHeaderRepository = new StockingInfoHeaderRepo();
-        StockingInfoDetailRepo infoBudgetRepository = new StockingInfoDetailRepo();
+        StockingInfoDetailRepo stockingInfoDetailRepo = new StockingInfoDetailRepo();
         StockingInfoFileRepo infoFileRepository = new StockingInfoFileRepo();
         
         if (parameter.getLastResultStatus().equals("mattercomplete")) {
-            infoHeaderRepository.insertContractInfoHeader(parameter.getSystemMatterId());
-            infoBudgetRepository.insertContractInfoBudget(parameter.getSystemMatterId());
-            infoFileRepository.insertContractInfoFile(parameter.getSystemMatterId());
+            infoHeaderRepository.insertStockingInfoHeader(parameter.getSystemMatterId());
+            stockingInfoDetailRepo.insertStockingInfoDetail(parameter.getSystemMatterId());
+            infoFileRepository.insertStockingInfoFile(parameter.getSystemMatterId());
             headerRepository.updateStatusHeader(parameter.getSystemMatterId(), "2"); // last approve
         } else { // if reject in some node approval
-            headerRepository.updateStatusHeader(parameter.getSystemMatterId(), "99", "Reject");
+            headerRepository.updateStatusHeader(parameter.getSystemMatterId(), "99");
         }
         return true;
     }

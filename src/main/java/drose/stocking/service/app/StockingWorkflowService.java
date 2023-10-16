@@ -73,6 +73,6 @@ public class StockingWorkflowService {
                 System.out.println(e);
             }
             return result;
-        }
+     }
 
 }

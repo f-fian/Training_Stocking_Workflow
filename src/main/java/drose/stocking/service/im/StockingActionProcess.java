@@ -206,7 +206,7 @@ public class StockingActionProcess extends ActionProcessEventListener {
         System.out.println(userParameter.get("f_contract_upload_file_real_name"));
         System.out.println("f_contract_upload_file_id");
         try {
-            List<String> varId = (List<String>) userParameter.get("f_contract_upload_file_id");
+			List<String> varId = (List<String>) userParameter.get("f_contract_upload_file_id");
             List<String> varFileName = (List<String>)userParameter.get("f_contract_upload_file_name");
             List<String> varFileRealName = (List<String>)userParameter.get("f_contract_upload_file_real_name");
             
@@ -279,18 +279,6 @@ public class StockingActionProcess extends ActionProcessEventListener {
         System.out.println("----- ActionProcessParameter - approve -----");
         outputLog(parameter);
         System.out.println("----- ActionProcessParameter - approve -----");
-        
-        try {
-            StockingInfoDetailRepo stockingInfoTempDetailRepo = new StockingInfoDetailRepo();
-            if(parameter.getNodeId().equals("operation_node")) {
-                final List<StockingInfoDetailModel> entity_infoTempDetail = getEntity_StockingInfoDetail(parameter, userParameter);
-                for(int i=0; i<entity_infoTempDetail.size(); i++) {
-                    stockingInfoTempDetailRepo.updateInfoTempDetailOperation(entity_infoTempDetail.get(i));
-                }
-            }
-        } catch (final Exception e) {
-            throw new WorkflowExternalException("Error Message", e);
-        }
     }
 
 }

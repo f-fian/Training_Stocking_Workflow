@@ -19,6 +19,15 @@
 
     <workflow:workflowOpenPageCsjs />
     <script type="text/javascript">
+    
+    
+    $(function(){
+    	$("#close").click(function(){
+            window.close();
+            return false;
+        });
+    })
+    
     /* $(function(){
         $(document).ready(function(){
             if($('#f_type_contract_baru').prop('checked')){
@@ -437,7 +446,8 @@ input[type=text] {
                 <c:forEach items="${StockingFormClassRows.fileData}"
                     var="fileData">
                     <tr>
-                        <td><a>${fileData.file_name}</a>
+                        <td >
+                        	<a href="stock/download/${fileData.id}">${fileData.file_name}</a>
                         </td>
                     </tr>
                 </c:forEach>

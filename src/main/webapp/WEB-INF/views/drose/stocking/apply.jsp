@@ -133,22 +133,16 @@
 			});
 			
 			$('#addDetail').click(()=>{
-				
-				
-				
 				var tbodyElement = $('.stocking_insert_detail');
 			    // Get all the table rows inside the tbody
 			    var rows = tbodyElement.find('tr');
 			    // Get the number of rows
 			    var rowCount = rows.length;
-			
-				
 				if (!imuiValidate('#workflowOpenPageForm', rules, messages))
 					return;
-				
 				console.log("ke sini22")
-			
 				var temp_nama_produk = $('#temp_f_nama_produk').val()
+				console.log(temp_nama_produk)
 				var temp_kategori = $('#temp_f_kategori').val()
 				var temp_harga = $('#temp_f_harga').val()
 				var temp_stok = $('#temp_f_stok').val()
@@ -158,19 +152,18 @@
 				stocking_detail_id = stocking_detail_id + 1;
 				$(".stocking_insert_detail").append("<tr>"
 						+"<td style='display:none;'><input type='hidden' name='stocking_detail_id' value="+stocking_detail_id+"></td> "
-						+"<td><input type='text' class='f_nama_produk' readonly value="+temp_nama_produk+" name='f_nama_produk' "
+						+"<td><input type='text' style='color: grey;' class='f_nama_produk' readonly value='"+temp_nama_produk+"' name='f_nama_produk' "
 						+"style='width: 135px;' /></td> " 
-						+"<td><input type='text' class='f_kategori' readonly value="+temp_kategori+" name='f_kategori' "
+						+"<td><input type='text' class='f_kategori' readonly value='"+temp_kategori+"' name='f_kategori' "
 						+"style='width: 135px;' /></td> " 
-						+"<td><input type='number' class='f_harga' readonly value="+temp_harga+" name='f_harga' "
+						+"<td><input type='number' class='f_harga' readonly value='"+temp_harga+"' name='f_harga' "
 						+"style='width: 135px;' /></td> " 
-						+"<td><input type='number' class='f_stok' readonly value="+temp_stok+" name='f_stok' "
+						+"<td><input type='number' class='f_stok' readonly value='"+temp_stok+"' name='f_stok' "
 						+"style='width: 135px;' /></td> " 
 						+"<td><input type='button' value='Delete' onClick='removeDetailRow(this)' "
 						+"style='width: 135px;' /></td> " 
 						+ "</tr>")
 						
-				
 				$('#temp_f_nama_produk').val("")
 				$('#temp_f_kategori').val("")
 				$('#temp_f_harga').val("")
@@ -295,7 +288,7 @@
                 </table>
                 <div class="imui-operation-parts">
 					<input type="button" value='Add Detail' id="addDetail"
-						name="addDetail" class="imui-small-button" 
+						name="addDetail" class="imui-medium-button" 
 						style="color: blue;margin-bottom: 15px;"/>
 				</div>
                 	
